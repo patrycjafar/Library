@@ -10,6 +10,6 @@ public class Main {
         String logOrCreate = scanner.next();
         Log.welcome(logOrCreate);
 
-
+        System.out.println("awd");
     }
 }
