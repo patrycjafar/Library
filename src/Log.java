@@ -23,6 +23,6 @@ public class Log extends LogLibrarian{
     public static void logIn(){
         System.out.println("Enter your account ID: ");
         System.out.println("Enter password: ");
-
+        System.out.println("fwd");
     }
 }
