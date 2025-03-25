@@ -13,6 +13,8 @@ public class Main {
      // Tworzenie obiektu Log, który obsługuje logowanie i tworzenie konta
      Log Log = new Log();
 
+//     EmployeeDatabase.addEmployees(10000);
+
      // Powitanie użytkownika
      System.out.println("Welcome to the online library");
 
@@ -24,6 +26,7 @@ public class Main {
 
      // Wywołanie metody welcome obiektu Log na podstawie odpowiedzi użytkownika
      Log.welcome(logOrCreate);
+
 
     }
 }

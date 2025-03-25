@@ -1,3 +1,7 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 /**
@@ -32,7 +36,7 @@ public class Log extends LogLibrarian {
 
     /**
      * Proces tworzenia konta użytkownika.
-     * Zbiera dane, takie jak imię, nazwisko i hasło, a następnie generuje identyfikator.
+     * Zbiera dane, takie jak imię, nazwisko i hasło, a następnie dodaje użytkownika do bazy danych.
      */
     public static void create() {
         System.out.println("What's your name?");
@@ -44,14 +48,13 @@ public class Log extends LogLibrarian {
         System.out.println("Create a password (at least 7 characters)");
         String password = scanner.next(); // Odczytanie hasła użytkownika
 
-        // Tworzenie pełnego imienia i nazwiska
-        String fullName = cusName + cusSurname;
-
-        // Generowanie unikalnego identyfikatora na podstawie hasła
-        int hash = Math.abs(fullName.hashCode()); // Pobierz wartość dodatnią z hasha pełnego imienia i nazwiska
-        String id = String.valueOf(hash).substring(0, Math.min(5, String.valueOf(hash).length())); // Maksymalnie 5 znaków z hasha
-
-        System.out.println("Your ID will be: " + id); // Wyświetlenie identyfikatora użytkownika
+        // Dodawanie rekordu do bazy danych
+        long id = addCustomerToDatabase(cusName, cusSurname, password);
+        if (id != -1) {
+            System.out.println("Customer added to the database successfully.");
+        } else {
+            System.out.println("Failed to add customer.");
+        }
     }
 
     /**
@@ -63,5 +66,36 @@ public class Log extends LogLibrarian {
 
         System.out.println("Enter password: ");
         String password = scanner.next(); // Odczytanie hasła użytkownika
+    }
+
+    private static long addCustomerToDatabase(String name, String surname, String password) {
+        long generatedId = -1;
+
+        // Ustanawianie połączenia z bazą danych
+        try (Connection connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/library", // URL bazy danych
+                "root", // Użytkownik
+                "" // Hasło
+        )) {
+            // Zapytanie SQL do dodania klienta
+            String query = "INSERT INTO customers (c_name, c_surname, password, number_of_books_borrowed) VALUES (?, ?, ?, 0)";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                preparedStatement.setString(1, name);
+                preparedStatement.setString(2, surname);
+                preparedStatement.setString(3, password);
+                preparedStatement.executeUpdate();
+
+                // Pobranie wygenerowanego ID
+                try (var generatedKeys = preparedStatement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        generatedId = generatedKeys.getLong(1);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return generatedId;
     }
 }
