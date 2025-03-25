@@ -12,7 +12,7 @@ public class Log extends LogLibrarian {
     // Statyczne pole klasy Main do uruchamiania głównej logiki programu
     static Main Main = new Main();
 
-    // Statyczne pole Scanner umożliwiające wczytywanie danych od użytkownika
+    // Statyczne pole Scanner umożliwiające wczytywanie danych od użytkownik
     static Scanner scanner = new Scanner(System.in);
 
     /**

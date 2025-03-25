@@ -5,7 +5,7 @@ public class LogLibrarian {
 
     /**
      * Logowanie bibliotekarza do systemu.
-     * Wyświetla komunikaty powitalne i prosi o podanie ID konta oraz hasła.
+     * Wyświetla komunikaty powitalne i prosi o podanie ID konta oraz hasła
      */
     public static void logInLib() {
         // Powitanie pracownika

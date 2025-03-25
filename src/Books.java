@@ -16,7 +16,7 @@ public class Books {
         // Wywołanie statycznej metody connect() z klasy ConnectToBase
         System.out.println(ConnectToBase.connect());
 
-        // Zwrócenie null, ponieważ metoda jest wstępna i nie zawiera pełnej logiki
+        // Zwrócenie null, ponieważ metoda jest wstępna i nie zawiera pełnej logik
         return null;
     }
 }

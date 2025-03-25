@@ -24,7 +24,7 @@ public class Main {
      // Odczytanie odpowiedzi użytkownika
      String logOrCreate = scanner.next();
 
-     // Wywołanie metody welcome obiektu Log na podstawie odpowiedzi użytkownika
+     // Wywołanie metody welcome obiektu Log na podstawie odpowiedzi użytkownik
      Log.welcome(logOrCreate);
 
 

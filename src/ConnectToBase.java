@@ -19,7 +19,7 @@ public class ConnectToBase {
         try {
             // Ustanawianie połączenia z bazą danych
             Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/library", // URL bazy danych
+                    "jdbc:mysql://localhost:3306/library", // URL bazy danyc
                     "root", // Użytkownik
                     ""); // Hasło
 
