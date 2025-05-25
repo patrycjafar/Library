@@ -1,48 +1,39 @@
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Klasa ConnectToBase zarządza połączeniem z bazą danych oraz (na razie) pobieraniem tytułów książek.
+ * Klasa do łączenia się z bazą danych i pobierania danych z tabeli books.
  */
 public class ConnectToBase {
 
     /**
      * Łączy się z bazą danych i pobiera listę tytułów książek.
      *
-     * @return Lista tytułów książek znajdujących się w bazie danych
+     * @return lista tytułów książek dostępnych w bazie danych
      */
     public static List<String> connect() {
-        // Lista na przechowywanie tytułów książek
-        List<String> bookTitles = new ArrayList<>();
+        List<String> titles = new ArrayList<>();
 
-        try {
-            // Ustanawianie połączenia z bazą danych
-            Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/library", // URL bazy danyc
-                    "root", // Użytkownik
-                    ""); // Hasło
+        try (Connection connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/library", "root", "")) {
 
-            // Zapytanie SQL do pobrania książek
-            String query = "SELECT * FROM books";
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            String query = "SELECT title FROM books";
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
 
-            // Pobieranie wyników i dodawanie tytułów książek do listy
             while (resultSet.next()) {
-                bookTitles.add(resultSet.getString("title"));
+                titles.add(resultSet.getString("title"));
             }
 
-            // Zamknięcie zasobów
-            resultSet.close();
-            preparedStatement.close();
-            connection.close();
         } catch (SQLException e) {
-            // Obsługa błędów SQL
             e.printStackTrace();
         }
 
-        // Zwracanie listy tytułów książek
-        return bookTitles;
+        return titles;
     }
 }
